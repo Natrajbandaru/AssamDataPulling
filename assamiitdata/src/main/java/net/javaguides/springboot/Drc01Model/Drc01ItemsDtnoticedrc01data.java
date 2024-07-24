@@ -1,0 +1,58 @@
+package net.javaguides.springboot.Drc01Model;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Entity
+@Table(name="drc01_items_dtnoticedrc01data")
+@ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Drc01ItemsDtnoticedrc01data {
+
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name="uuid",strategy = "uuid2")
+	public String dtnoticedrc01data_id;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="sdtls_id",referencedColumnName = "sdtls_id")
+	public Drc01ItemsDtnoticedrc01dataSdtls sdtls;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="todtls_id",referencedColumnName = "todtls_id")
+	public Drc01ItemsDtnoticedrc01dataTodtls todtls;
+
+	
+	@Column(name = "created_at")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime createdAt;
+
+	@PrePersist
+	protected void onCreate() {
+	    LocalDateTime currentTime = LocalDateTime.now();
+	    createdAt = currentTime.withSecond(0).withNano(0);
+	}
+   
+	
+}
